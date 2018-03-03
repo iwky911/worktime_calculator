@@ -1,3 +1,3 @@
-# Commute-time
+# worktime_calculator
 
-Compute your commute time from your location history.
+Extract statistics from your location history.
