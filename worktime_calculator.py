@@ -12,6 +12,11 @@ EARTH_RADIUS = 6371
 # Multiplier that converts the lat/lon distance into km.
 DISTANCE_MULTIPLIER = EARTH_RADIUS * math.pi / (180.)
 
+# A date far in the futur.
+# TODO: update in 2069.
+MAX_DATE = datetime(2070, 1, 1)
+MIN_DATE = datetime(1970, 1, 1)
+
 class DistanceHelper:
     def __init__(self, home, work, tolerance):
         self._lon_coef = math.cos(home[0][0])
@@ -97,13 +102,13 @@ def main():
             date_tuple = (d.year, d.month, d.day)
 
             if distance_helper.at_work(location):
-                day = days_at_work.setdefault(date_tuple, DaySomewhere(d.max, d.min))
+                day = days_at_work.setdefault(date_tuple, DaySomewhere(MAX_DATE, MIN_DATE))
                 if day.arrived.timestamp() > timestamp:
                     day.arrived = d
                 if day.left.timestamp() < timestamp:
                     day.left = d
             elif distance_helper.at_home(location):
-                day = days_at_home.setdefault(date_tuple, DaySomewhere(d.max, d.min))
+                day = days_at_home.setdefault(date_tuple, DaySomewhere(MAX_DATE, MIN_DATE))
                 if day.arrived.timestamp() > timestamp and d.hour > 13:
                     day.arrived = d
                 elif day.left.timestamp() < timestamp and d.hour < 13:
